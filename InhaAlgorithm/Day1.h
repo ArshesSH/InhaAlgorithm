@@ -7,5 +7,4 @@ public:
 	static int med3( int a, int b, int c );
 private:
 	static int GetMax( int lhs, int rhs );
-	static void Swap( int& lhs, int& rhs );
 };
