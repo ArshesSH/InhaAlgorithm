@@ -5,6 +5,6 @@
 
 int main()
 {
-	Day3::ChangeNotation();
+	Day3::FindEfficientPrimeNum();
 	return 0;
 }
