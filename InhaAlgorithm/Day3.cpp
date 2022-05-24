@@ -89,12 +89,23 @@ std::vector<int> Day3::PrimeNumOdd(int n)
 	primeList.push_back( 2 );
 	primeList.push_back( 3 );
 
+	int j;
 	for ( int i = 5; i <= n; i += 2 )
 	{
-		if ( IsPrimeNum( i ) )
+		bool isPrime = true;
+		for (  j = 3; j < i; j+=2 )
+		{
+			if ( i % j == 0 )
+			{
+				isPrime = false;
+				break;
+			}
+		}
+		if ( isPrime )
 		{
 			primeList.push_back( i );
 		}
+
 	}
 	return primeList;
 }
