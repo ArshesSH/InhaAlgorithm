@@ -89,11 +89,10 @@ std::vector<int> Day3::PrimeNumOdd(int n)
 	primeList.push_back( 2 );
 	primeList.push_back( 3 );
 
-	int j;
 	for ( int i = 5; i <= n; i += 2 )
 	{
 		bool isPrime = true;
-		for (  j = 3; j < i; j+=2 )
+		for ( int j = 3; j < i; j+=2 )
 		{
 			if ( i % j == 0 )
 			{
@@ -114,23 +113,11 @@ std::vector<int> Day3::PrimeNumOddDivPrime( int n )
 {
 	std::vector<int> primeList;
 	primeList.push_back( 2 );
-	primeList.push_back( 3 );
-	int j;
+	primeList.push_back( 3 );\
 	int listSize = 1;
 	for ( int i = 5; i <= n; i += 2 )
 	{
 		bool isPrime = true;
-
-		/*
-		for ( auto e : primeList )
-		{
-			if ( i % e == 0 )
-			{
-				isPrime = false;
-				break;
-			}
-		}
-		*/
 
 		for( int j = 0; j < listSize; j++ )
 		{
