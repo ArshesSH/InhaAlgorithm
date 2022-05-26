@@ -77,37 +77,55 @@ int PrintBinarySearch( const std::vector<float>& list, float target )
 	}
 	std::cout << std::endl;
 
-	int pos;
-	int startPos = -1;
-	size_t endPos = list.size();
-	size_t midPos = ((endPos - startPos) / 2) + startPos;
+	int startPos = 0;
+	int endPos = (int)list.size() - 1;
+	int midPos;
 
 	bool isTarget = false;
-	while ( midPos != startPos )
+	while ( startPos <= endPos )
 	{
+		midPos = ((endPos - startPos) / 2) + startPos;
+
 		std::cout << " |";
 		for ( int i = 0; i < (int)list.size(); i++ )
 		{
-			if ( i == startPos+1 )
+			if ( i == startPos )
 			{
-				std::cout << " <-";
+				if (startPos == midPos)
+				{
+					std::cout << "<";
+				}
+				else
+				{
+					std::cout << "<- ";
+				}
 			}
-			else if ( i == endPos - 1 )
-			{
-				std::cout << " ->";
-			}
-			else if(i == midPos )
+
+			if (i == midPos)
 			{
 				std::cout << " + ";
 			}
-			else
+
+			if ( i == endPos )
+			{
+				if (startPos == midPos)
+				{
+					std::cout << ">";
+				}
+				else
+				{
+					std::cout << " ->";
+				}
+			}
+
+			if( i != startPos && i!= midPos && i!=endPos )
 			{
 				std::cout << "   ";
 			}
 		}
 		std::cout << std::endl;
 
-		std::cout << midPos << "|   ";
+		std::cout << midPos << "|";
 		for ( int i = 0; i < list.size(); i++ )
 		{
 			std::cout << " " << list[i] <<" ";
@@ -115,15 +133,15 @@ int PrintBinarySearch( const std::vector<float>& list, float target )
 		std::cout << std::endl;
 		std::cout << " |\n";
 
+
 		if ( target < list[midPos] )
 		{
-			endPos = midPos;
-			midPos = ((endPos - startPos) / 2) + startPos;
+			endPos = midPos - 1;
+
 		}
 		else if ( target > list[midPos] )
 		{
-			startPos = midPos;
-			midPos = ((endPos - startPos) / 2) + startPos;
+			startPos = midPos + 1;
 		}
 		else
 		{
@@ -178,13 +196,13 @@ void Day5::FindDataBinarySearchTable()
 		const float data = std::stof( dataStr );
 		Timer timer;
 		const auto dataPos = PrintBinarySearch( list, data );
-		if ( dataPos != list.size() )
+		if ( dataPos != -1 )
 		{
-			std::cout << "자료 중 " << data << "가 있습니다." << std::endl;
+			std::cout << "자료 중 " << data << "가(이) 있습니다." << std::endl;
 		}
 		else
 		{
-			std::cout << "자료 중 " << data << "가 없습니다." << std::endl;
+			std::cout << "자료 중 " << data << "가(이) 없습니다." << std::endl;
 		}
 		std::cout << "걸린시간 = " << timer.GetTime() << std::endl;
 		dataStr.clear();

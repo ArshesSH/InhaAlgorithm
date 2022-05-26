@@ -31,22 +31,20 @@ public:
 
 	static int BinarySearch( const std::vector<T>& list, T target )
 	{
-		int startPos = -1;
-		size_t endPos = list.size();
-		size_t midPos = ((endPos - startPos) / 2) + startPos;
-
+		int startPos = 0;
+		int endPos = (int)list.size()-1;
+		int midPos;
 		bool isTarget = false;
-		while ( midPos != startPos)
+		while ( startPos <= endPos )
 		{
+			midPos = ((endPos - startPos) / 2) + startPos;
 			if ( target < list[midPos] )
 			{
-				endPos = midPos;
-				midPos = ((endPos - startPos) / 2) + startPos;
+				endPos = midPos - 1;
 			}
 			else if ( target > list[midPos] )
 			{
-				startPos = midPos;
-				midPos = ((endPos - startPos) / 2) + startPos;
+				startPos = midPos + 1;
 			}
 			else
 			{
@@ -54,7 +52,6 @@ public:
 				break;
 			}
 		}
-
 		return isTarget ?  midPos : -1;
 	}
 };
