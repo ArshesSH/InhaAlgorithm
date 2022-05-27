@@ -234,7 +234,7 @@ static void* bsearchx( const void* key, const void* base, size_t nmemb, size_t s
 	int isTarget = false;
 	while ( startPos <= endPos )
 	{
-		midPos = ((endPos - startPos) / 2) + pStart;
+		midPos = ((endPos - startPos) / 2) + startPos;
 
 		// Set MidPos to Left of same elements
 		for ( void* pTmp = pMid; compar( pMid, pTmp ) == 0; pTmp -= size )
