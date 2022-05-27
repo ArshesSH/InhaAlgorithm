@@ -1,4 +1,4 @@
-#include "Day5.h"
+#include "Day5To7.h"
 
 #include <iostream>
 #include <string>
@@ -6,8 +6,9 @@
 #include <algorithm>
 #include "SearchAlgorithm.h"
 #include "Timer.h"
+#include <cstdlib>
 
-void Day5::FindDataBinarySearch()
+void Day5To7::FindDataBinarySearch()
 {
 	std::vector<float> list;
 	std::cout << "Binary Search\n";
@@ -154,7 +155,7 @@ int PrintBinarySearch( const std::vector<float>& list, float target )
 
 }
 
-void Day5::FindDataBinarySearchTable()
+void Day5To7::FindDataBinarySearchTable()
 {
 	std::vector<float> list;
 	std::cout << "Binary Search\n";
@@ -207,4 +208,92 @@ void Day5::FindDataBinarySearchTable()
 		std::cout << "걸린시간 = " << timer.GetTime() << std::endl;
 		dataStr.clear();
 	}
+}
+
+int intCmp( const int* a, const int* b )
+{
+	if ( *a < *b )
+		return -1;
+	else if ( *a > *b )
+		return 1;
+	else
+		return 0;
+};
+
+static void* bsearchx( const void* key, const void* base, size_t nmemb, size_t size, int(*compar)(const void*, const void*) )
+{
+	//void* pStart = (void*)base;
+	//void* pEnd = (void*)(nmemb * size);
+	//void* pMid;
+
+	size_t startPos = 0;
+	size_t endPos = nmemb * size;
+	size_t midPos;
+
+
+	int isTarget = false;
+	while ( startPos <= endPos )
+	{
+		midPos = ((endPos - startPos) / 2) + pStart;
+
+		// Set MidPos to Left of same elements
+		for ( void* pTmp = pMid; compar( pMid, pTmp ) == 0; pTmp -= size )
+		{
+			pMid = pTmp;
+		}
+
+		int compareResult = compar( key, pMid );
+
+		if ( compareResult == -1 )
+		{
+			pEnd = pMid - size;
+		}
+		else if ( compareResult == 1 )
+		{
+			pStart = pMid + size;
+		}
+		else
+		{
+			isTarget = true;
+			break;
+		}
+	}
+
+	return isTarget ? pMid : NULL;
+}
+
+void Day5To7::UseBinarySearchLib()
+{
+	int nx;
+
+	std::cout << "bsearch 함수 사용하여 검색\n요소 개수 : ";
+	std::cin >> nx;
+	int* x = (int*)calloc( nx, sizeof( int ) );
+	
+	std::cout << "오름차순으로 입력 : ";
+	std::cout << "x[0] : ";
+	std::cin >> x[0];
+	for ( int i = 1; i < nx; i++ )
+	{
+		do
+		{
+			std::cout << "x[" << i << "] : ";
+			std::cin >> x[i];
+		} while ( x[i] < x[i - 1] );
+	}
+
+	int key;
+	std::cout << " 검색값 : ";
+	std::cin >> key;
+
+	int* p = (int*)bsearch( &key, x, nx, sizeof( int ), (int(*)(const void*, const void*))intCmp );
+	if ( p == nullptr )
+	{
+		std::cout << "검색에 실패했습니다.\n";
+	}
+	else
+	{
+		printf( "%d는 x[%d]에 있습니다\n", key, (int)(p - x) );
+	}
+	free( x );
 }

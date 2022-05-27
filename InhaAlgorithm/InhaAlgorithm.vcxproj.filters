@@ -30,7 +30,7 @@
     <ClCompile Include="Day4.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Day5.cpp">
+    <ClCompile Include="Day5To7.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -53,7 +53,7 @@
     <ClInclude Include="Timer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Day5.h">
+    <ClInclude Include="Day5To7.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

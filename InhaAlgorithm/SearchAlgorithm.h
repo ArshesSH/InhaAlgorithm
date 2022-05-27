@@ -54,5 +54,7 @@ public:
 		}
 		return isTarget ?  midPos : -1;
 	}
+
+
 };
 
