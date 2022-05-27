@@ -220,47 +220,6 @@ int intCmp( const int* a, const int* b )
 		return 0;
 };
 
-static void* bsearchx( const void* key, const void* base, size_t nmemb, size_t size, int(*compar)(const void*, const void*) )
-{
-	//void* pStart = (void*)base;
-	//void* pEnd = (void*)(nmemb * size);
-	//void* pMid;
-
-	size_t startPos = 0;
-	size_t endPos = nmemb * size;
-	size_t midPos;
-
-
-	int isTarget = false;
-	while ( startPos <= endPos )
-	{
-		midPos = ((endPos - startPos) / 2) + startPos;
-
-		// Set MidPos to Left of same elements
-		for ( void* pTmp = pMid; compar( pMid, pTmp ) == 0; pTmp -= size )
-		{
-			pMid = pTmp;
-		}
-
-		int compareResult = compar( key, pMid );
-
-		if ( compareResult == -1 )
-		{
-			pEnd = pMid - size;
-		}
-		else if ( compareResult == 1 )
-		{
-			pStart = pMid + size;
-		}
-		else
-		{
-			isTarget = true;
-			break;
-		}
-	}
-
-	return isTarget ? pMid : NULL;
-}
 
 void Day5To7::UseBinarySearchLib()
 {
@@ -286,7 +245,7 @@ void Day5To7::UseBinarySearchLib()
 	std::cout << " 검색값 : ";
 	std::cin >> key;
 
-	int* p = (int*)bsearch( &key, x, nx, sizeof( int ), (int(*)(const void*, const void*))intCmp );
+	int* p = SearchAlgorithm<int>::bsearch( &key, x, nx, sizeof( int ), (int(*)(const void*, const void*))intCmp );
 	if ( p == nullptr )
 	{
 		std::cout << "검색에 실패했습니다.\n";
