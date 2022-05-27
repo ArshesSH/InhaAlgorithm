@@ -245,7 +245,7 @@ void Day5To7::UseBinarySearchLib()
 	std::cout << " 검색값 : ";
 	std::cin >> key;
 
-	int* p = SearchAlgorithm<int>::bsearch( &key, x, nx, sizeof( int ), (int(*)(const void*, const void*))intCmp );
+	int* p = (int*)SearchAlgorithm<int>::bsearch( &key, x, nx, sizeof( int ), (int(*)(const void*, const void*))intCmp );
 	if ( p == nullptr )
 	{
 		std::cout << "검색에 실패했습니다.\n";
