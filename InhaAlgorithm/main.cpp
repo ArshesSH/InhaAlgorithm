@@ -4,9 +4,10 @@
 #include "Day3.h"
 #include "Day4.h"
 #include "Day5To7.h"
+#include "Day8.h"
 
 int main()
 {
-	Day5To7::UseBinarySearchLib();
+	Day8::CustomStack();
 	return 0;
 }
