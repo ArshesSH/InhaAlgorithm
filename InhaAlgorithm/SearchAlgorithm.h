@@ -56,32 +56,33 @@ public:
 	}
 
 
-	static T* bsearch( const void* key, const void* base, size_t nmemb, size_t size, T(*compar)(const void*, const void*) )
+	static void* bsearch( const void* key, const void* base, size_t nmemb, size_t size, int(*compar)(const void*, const void*) )
 	{
-		T* pStart = (T*)base;
-		T* pEnd = pStart + nmemb;
-		T* pMid = ((pEnd - pStart) / 2) + pStart;
+		char* castedBase = (char*)base;
+		size_t startPos = 0;
+		size_t endPos = nmemb - 1;
+		size_t midPos;
 
 		bool isTarget = false;
-		while ( compar( pStart, pEnd ) != 0 )
+		while (startPos <= endPos)
 		{
-			pMid = ((pEnd - pStart) / 2) + pStart;
+			midPos = ((endPos - startPos) / 2) + startPos;
 
 			// Set MidPos to Left of same elements
-			for ( T* pTmp = pMid; compar( pMid, pTmp ) == 0; pTmp -= size )
+			for (size_t tmpPos = midPos; midPos == tmpPos; tmpPos -= 1 )
 			{
-				pMid = pTmp;
+				midPos = tmpPos;
 			}
 
-			int compareResult = compar( key, pMid );
+			int compareResult = compar( key, &castedBase[size*midPos] );
 
 			if ( compareResult == -1 )
 			{
-				pEnd = pMid - size;
+				endPos = midPos - 1;
 			}
 			else if ( compareResult == 1 )
 			{
-				pStart = pMid + size;
+				startPos = midPos + 1;
 			}
 			else
 			{
@@ -89,9 +90,7 @@ public:
 				break;
 			}
 		}
-
-		return isTarget ? pMid : NULL;
+		return isTarget ? &castedBase[size * midPos] : NULL;
 	}
-
 };
 
