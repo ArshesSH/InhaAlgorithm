@@ -146,6 +146,7 @@
     <ClCompile Include="Day5To7.cpp" />
     <ClCompile Include="Day8.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Queue.cpp" />
     <ClCompile Include="Stack.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -155,6 +156,7 @@
     <ClInclude Include="Day4.h" />
     <ClInclude Include="Day5To7.h" />
     <ClInclude Include="Day8.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="SearchAlgorithm.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="Timer.h" />

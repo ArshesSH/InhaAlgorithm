@@ -8,6 +8,6 @@
 
 int main()
 {
-	Day8::CustomStack();
+	Day8::CustomQueue();
 	return 0;
 }
