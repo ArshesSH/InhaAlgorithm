@@ -5,9 +5,10 @@
 #include "Day4.h"
 #include "Day5To7.h"
 #include "Day8.h"
+#include "Day9.h"
 
 int main()
 {
-	Day8::CustomQueue();
+	Day9::ExRecursion();
 	return 0;
 }
