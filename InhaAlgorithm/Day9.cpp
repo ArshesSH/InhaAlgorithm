@@ -56,27 +56,26 @@ void Day9::ExRecursion()
 *	cba
 */
 
-std::pair<std::string, std::string> GetParts( const std::string str )
+void permute( const std::string& str, int iLeft, int iRight )
 {
-	if ( str.size() > 2 )
+	std::string copied = str;
+	if ( iLeft == iRight )
 	{
-		GetParts( str.substr( 1, str.size() - 2 ) );
+		std::cout << copied << std::endl;
 	}
 	else
 	{
-		return { str, {str[1],str[0]} };
-	}
-}
-
-std::string GetPermutation( const std::string str )
-{
-	for ( int i = 0; i < str.size(); ++i )
-	{
-
+		for ( int i = iLeft; i <= iRight; ++i )
+		{
+			std::swap( copied[iLeft], copied[i] );
+			permute( copied, iLeft + 1, iRight );
+			std::swap( copied[iLeft], copied[i] );
+		}
 	}
 }
 
 void Day9::ExRecursion2()
 {
-	
+
+	permute( "abcd", 0, 3 );
 }
