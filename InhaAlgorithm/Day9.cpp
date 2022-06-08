@@ -3,6 +3,8 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <stack>
+#include <queue>
 
 /*
 * 다음의 함수를 사용하여 int값을 역으로 화면에 출력하는 코드 작성
@@ -78,4 +80,86 @@ void Day9::ExRecursion2()
 {
 
 	permute( "abcd", 0, 3 );
+}
+
+class Operators
+{
+public:
+	enum class Order
+	{
+		LeftParentheses = 0,
+		RightParentheses = 0,
+		Plus = 1,
+		Minus = 1,
+		Asterisk = 2,
+		Slash = 2
+	};
+
+public:
+	Operators( const std::string str )
+		:
+		opChar(str[0])
+	{
+		switch ( opChar )
+		{
+		case '(':
+			order = Order::LeftParentheses;
+			break;
+		case ')':
+			order = Order::RightParentheses;
+			break;
+		case '+':
+			order = Order::Plus;
+			break;
+		case '-':
+			order = Order::Minus;
+			break;
+		case '*':
+			order = Order::Asterisk;
+			break;
+		case '/':
+			order = Order::Slash;
+			break;
+		}
+	}
+
+	bool operator>( const Operators& rhs ) const
+	{
+		return order > rhs.order;
+	}
+	bool operator==( const char c ) const
+	{
+		return opChar == c;
+	}
+
+private:
+	char opChar;
+	Order order;
+};
+
+std::queue<std::string> InfixToPostfix( const std::string& s )
+{
+	std::queue<std::string> postfix;
+	std::stack<Operators> OpStack;
+	std::string passStr;
+	postfix.push( "(" );
+	for ( const auto c : s )
+	{
+		if ( isdigit( c ) )
+		{
+			passStr += c;
+		}
+		else if ( c == '-' )
+		{
+
+		}
+	}
+
+	postfix.push( ")" );
+	return postfix;
+}
+
+void Day9::UsePostfixCalculator()
+{
+
 }
