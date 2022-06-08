@@ -9,6 +9,6 @@
 
 int main()
 {
-	Day9::ExRecursion();
+	Day9::UsePostfixCalculator();
 	return 0;
 }

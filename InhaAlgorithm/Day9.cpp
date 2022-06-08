@@ -5,6 +5,7 @@
 #include <vector>
 #include <stack>
 #include <queue>
+#include <fstream>
 
 /*
 * 다음의 함수를 사용하여 int값을 역으로 화면에 출력하는 코드 작성
@@ -90,17 +91,18 @@ public:
 		LeftParentheses = 0,
 		RightParentheses = 0,
 		Plus = 1,
-		Minus = 1,
-		Asterisk = 2,
-		Slash = 2
+		Minus = 2,
+		Asterisk = 3,
+		Slash = 3,
+		Tilde = 3
 	};
 
 public:
 	Operators( const std::string str )
 		:
-		opChar(str[0])
+		opStr(str)
 	{
-		switch ( opChar )
+		switch (opStr[0] )
 		{
 		case '(':
 			order = Order::LeftParentheses;
@@ -115,10 +117,20 @@ public:
 			order = Order::Minus;
 			break;
 		case '*':
+		case 'x':
+		case 'X':
+			opStr = '*';
 			order = Order::Asterisk;
 			break;
 		case '/':
 			order = Order::Slash;
+			break;
+		case '~':
+			order = Order::Tilde;
+			break;
+		default:
+			std::cout << "Input Error!\n";
+			exit( 1 );
 			break;
 		}
 	}
@@ -127,39 +139,232 @@ public:
 	{
 		return order > rhs.order;
 	}
-	bool operator==( const char c ) const
+	bool operator<=( const Operators& rhs ) const
 	{
-		return opChar == c;
+		return order <= rhs.order;
+	}
+	bool operator==( char c ) const
+	{
+		return opStr[0] == c;
+	}
+	bool operator!=( char c ) const
+	{
+		return opStr[0] != c;
+	}
+	std::string GetOperator() const
+	{
+		return opStr;
 	}
 
 private:
-	char opChar;
+	std::string opStr;
 	Order order;
 };
 
-std::queue<std::string> InfixToPostfix( const std::string& s )
+void PushOperator( std::stack<Operators>& opStack, std::queue<std::string>& postfix, const std::string& curOpStr )
 {
-	std::queue<std::string> postfix;
-	std::stack<Operators> OpStack;
-	std::string passStr;
-	postfix.push( "(" );
-	for ( const auto c : s )
-	{
-		if ( isdigit( c ) )
-		{
-			passStr += c;
-		}
-		else if ( c == '-' )
-		{
+	bool pushFlag = true;
+	const Operators curOperator( curOpStr );
 
+	while (pushFlag)
+	{
+		if (curOperator == '(')
+		{
+			opStack.push( curOperator );
+			pushFlag = false;
+		}
+		else if(curOperator == ')')
+		{
+			for ( auto op = opStack.top(); op != '('; opStack.pop(), op = opStack.top())
+			{
+				postfix.push( op.GetOperator() );
+			}
+			opStack.pop();
+			pushFlag = false;
+		}
+		else if (opStack.top() <= curOperator)
+		{
+			opStack.push( curOperator );
+			pushFlag = false;
+		}
+		else if (opStack.top() > curOperator)
+		{
+			const std::string opStr = opStack.top().GetOperator();
+			opStack.pop();
+			postfix.push( opStr );
 		}
 	}
+}
 
-	postfix.push( ")" );
+std::queue<std::string> InfixToPostfix( const std::string& infix )
+{
+	std::queue<std::string> postfix;
+	std::stack<Operators> opStack;
+	std::string passStr;
+	std::string copiedInfix = "(" + infix + ")";
+	// Parsing infix str
+	for (auto i = 0; i < copiedInfix.size(); ++i)
+	{
+		// If Number
+		if (isdigit( copiedInfix[i] ))
+		{
+			passStr += copiedInfix[i];
+		}
+		// If Space
+		else if(copiedInfix[i] == ' ')
+		{
+			// Do Skip
+		}
+		// If Dot Keep track number (for float)
+		else if (copiedInfix[i] == '.')
+		{
+			// If Dot at right of operand, then add 0 first
+			if (!isdigit( copiedInfix[i - 1] ))
+			{
+				passStr += "0" + copiedInfix[i];
+			}
+			else
+			{
+				passStr += copiedInfix[i];
+			}
+		}
+		// Rest operand, stop tracking number and push to 
+		else
+		{
+			// If '-'on first letter or right of operand, Change to ~
+			if (copiedInfix[i] == '-')
+			{
+				if (i == 0)
+				{
+					copiedInfix[i] = '~';
+				}
+				else if (!isdigit( copiedInfix[i - 1] ) && copiedInfix[i-1] != ')')
+				{
+					copiedInfix[i] = '~';
+				}
+			}
+
+			if (passStr.size() != 0)
+			{
+				postfix.push( passStr );
+				passStr.clear();
+			}
+			passStr += copiedInfix[i];
+			PushOperator( opStack, postfix, passStr );
+			passStr.clear();
+		}
+	}
 	return postfix;
+}
+
+double CalcPostfix( std::queue<std::string>& postfix )
+{
+	std::stack<double> resultStack;
+	
+	while ( !postfix.empty() )
+	{
+		const std::string dataStr = postfix.front();
+		postfix.pop();
+
+		if (isdigit( dataStr[0] ))
+		{
+			resultStack.push( std::stod( dataStr ) );
+		}
+		else
+		{
+			const char operand = dataStr[0];
+
+			if (operand == '+')
+			{
+				const double rhs = resultStack.top();
+				resultStack.pop();
+				const double lhs = resultStack.top();
+				resultStack.pop();
+				resultStack.push( lhs + rhs );
+			}
+			else if (operand == '-')
+			{
+				const double rhs = resultStack.top();
+				resultStack.pop();
+				const double lhs = resultStack.top();
+				resultStack.pop();
+				resultStack.push( lhs - rhs );
+			}
+			else if (operand == '*')
+			{
+				const double rhs = resultStack.top();
+				resultStack.pop();
+				const double lhs = resultStack.top();
+				resultStack.pop();
+				resultStack.push( lhs * rhs );
+			}
+			else if (operand == '/')
+			{
+				const double rhs = resultStack.top();
+				resultStack.pop();
+				const double lhs = resultStack.top();
+				resultStack.pop();
+				resultStack.push( lhs / rhs );
+			}
+			else if (operand == '~')
+			{
+				const double rhs = resultStack.top();
+				resultStack.pop();
+				resultStack.push( -1 * rhs );
+			}
+		}
+	}
+	return resultStack.top();
+}
+
+void PrintPostfixCalcResult( const std::string& infix )
+{
+	auto postfix = InfixToPostfix( infix );
+	double result = CalcPostfix( postfix );
+	std::cout << "Result = " << result << std::endl;
 }
 
 void Day9::UsePostfixCalculator()
 {
+	int menu = 1;
+	while (menu)
+	{
+		std::cout << "\nCalculator\n"
+			<< "0: Exit, 1: Keboard Input, 2: File Input : ";
+		std::cin >> menu;
+		if (menu == 0)
+		{
+			break;
+		}
+		else if (menu == 1)
+		{
+			std::string infix;
 
+			std::cin.get();
+			std::cout << "Input Calculation formula (Infix): ";
+			std::getline( std::cin, infix );
+			
+			PrintPostfixCalcResult( infix );
+		}
+		else if (menu == 2)
+		{
+			std::vector<std::string> formulas;
+
+			std::ifstream in( L"data/InfixFormulas.txt" );
+			for (std::string str; std::getline( in, str );)
+			{
+				if (str.empty())
+				{
+					continue;
+				}
+				formulas.push_back( str );
+			}
+			in.close();
+
+			for (const auto e : formulas)
+			{
+				PrintPostfixCalcResult( e );
+			}
+		}
+	}
 }
