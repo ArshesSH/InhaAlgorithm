@@ -5,5 +5,6 @@ public:
 	static void ExRecursion();
 	static void ExRecursion2();
 	static void UsePostfixCalculator();
+	static void ExTowerOfHanoi();
 };
 

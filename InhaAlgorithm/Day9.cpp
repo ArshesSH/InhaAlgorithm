@@ -368,3 +368,86 @@ void Day9::UsePostfixCalculator()
 		}
 	}
 }
+
+enum class Tower
+{
+	Under = -1,
+	A,
+	B,
+	C,
+	Count
+};
+
+
+int TowerNumFix( int n )
+{
+	if ( n == (int)Tower::Count )
+	{
+		return (int)Tower::Under + 1;
+	}
+	else if (n == (int)Tower::Under )
+	{
+		return (int)Tower::Count - 1;
+	}
+	else
+	{
+		return n;
+	}
+}
+
+int	GetMoveDir(int ringCnt)
+{
+	// move right when even
+	if ( ringCnt % 2 == 0 )
+	{
+		return 1;
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+bool MoveRing(std::stack<int>& curTower, std::stack<int>& nextTower)
+{
+	//Move if Next Tower is Empty or curTop < nextTop
+	if ( nextTower.empty() || curTower.top() < nextTower.top() )
+	{
+		const int num = curTower.top();
+		curTower.pop();
+		nextTower.push( num );
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+int TowerOfHanoi(int curTowerNum, int cntTowerC, int ringCntMax, int moveDir )
+{
+	if ( cntTowerC < ringCntMax )
+	{
+		const int nextTowerNum = TowerNumFix( curTowerNum + moveDir );
+	}
+}
+
+
+void Day9::ExTowerOfHanoi()
+{
+	constexpr int towerCnt = (int)Tower::Count;
+	std::stack<int> towers[towerCnt];
+
+	int ringCntMax = 3;
+
+	// Init Tower
+	for ( int i = ringCntMax; i > 0; --i )
+	{
+		towers[(int)Tower::A].push( i );
+	}
+
+	int moveDir = GetMoveDir( ringCntMax );
+
+
+
+}
