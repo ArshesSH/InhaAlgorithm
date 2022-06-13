@@ -9,6 +9,9 @@
 
 int main()
 {
-	Day9::UsePostfixCalculator();
+	while ( true )
+	{
+		Day9::ExTowerOfHanoi();
+	}
 	return 0;
 }

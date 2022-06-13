@@ -371,7 +371,6 @@ void Day9::UsePostfixCalculator()
 
 enum class Tower
 {
-	Under = -1,
 	A,
 	B,
 	C,
@@ -381,13 +380,13 @@ enum class Tower
 
 int TowerNumFix( int n )
 {
-	if ( n == (int)Tower::Count )
+	if (n < 0)
 	{
-		return (int)Tower::Under + 1;
+		return TowerNumFix((int)Tower::Count + n);
 	}
-	else if (n == (int)Tower::Under )
+	else if (n >= (int)Tower::Count)
 	{
-		return (int)Tower::Count - 1;
+		return TowerNumFix( n - (int)Tower::Count);
 	}
 	else
 	{
@@ -408,14 +407,27 @@ int	GetMoveDir(int ringCnt)
 	}
 }
 
-bool MoveRing(std::stack<int>& curTower, std::stack<int>& nextTower)
+bool MoveRing( std::vector<int>& curTower, std::vector<int>& nextTower )
 {
-	//Move if Next Tower is Empty or curTop < nextTop
-	if ( nextTower.empty() || curTower.top() < nextTower.top() )
+	// If curTower is empty skip
+	if (curTower.empty())
 	{
-		const int num = curTower.top();
-		curTower.pop();
-		nextTower.push( num );
+		return false;
+	}
+
+	const int curTowerTop = curTower[curTower.size() - 1];
+
+	//Move if Next Tower is Empty or curTop < nextTop
+	if (nextTower.empty())
+	{
+		curTower.pop_back();
+		nextTower.push_back( curTowerTop );
+		return true;
+	}
+	else if (curTowerTop < nextTower[nextTower.size() - 1])
+	{
+		curTower.pop_back();
+		nextTower.push_back( curTowerTop );
 		return true;
 	}
 	else
@@ -424,30 +436,77 @@ bool MoveRing(std::stack<int>& curTower, std::stack<int>& nextTower)
 	}
 }
 
-int TowerOfHanoi(int curTowerNum, int cntTowerC, int ringCntMax, int moveDir )
+void PrintTower( const std::vector<std::vector<int>>& towers, int ringCnt )
 {
-	if ( cntTowerC < ringCntMax )
+	printf( " A   B   C\n" );
+	
+	for ( int j = ringCnt - 1; j >= 0; --j )
 	{
-		const int nextTowerNum = TowerNumFix( curTowerNum + moveDir );
+		for ( int i = 0; i < towers.size(); ++i )
+		{
+			const int towerTopPos = (int)towers[i].size() - 1;
+			if ( j > towerTopPos )
+			{
+				printf( "[ ] " );
+			}
+			else
+			{
+				printf( "[%d] ", towers[i][j] );
+			}
+		}
+		printf( "\n" );
 	}
-}
 
+	printf( "\n" );
+}
 
 void Day9::ExTowerOfHanoi()
 {
-	constexpr int towerCnt = (int)Tower::Count;
-	std::stack<int> towers[towerCnt];
+	int ringCntMax = 0;
+	while ( ringCntMax <= 0 )
+	{
+		std::cout << "하노이의 탑\n링의 개수를 입력하세요 : ";
+		std::cin >> ringCntMax;
+	}
 
-	int ringCntMax = 3;
+	constexpr int towerCnt = (int)Tower::Count;
+	std::vector<std::vector<int>> towers(towerCnt);
 
 	// Init Tower
 	for ( int i = ringCntMax; i > 0; --i )
 	{
-		towers[(int)Tower::A].push( i );
+		towers[(int)Tower::A].push_back( i );
 	}
+	PrintTower( towers, ringCntMax );
 
 	int moveDir = GetMoveDir( ringCntMax );
+	int moveCount;
+	int curTowerPos = 0;
+	int nextTowerPos = 0;
 
+	// Get Result
+	for (moveCount = 0; towers[towerCnt - 1].size() < ringCntMax; )
+	{
+		bool isMoved = false;
 
+		// Try Move at CurTower
+		for (int i = 1; (i <= towerCnt - 1) && !isMoved; ++i)
+		{
+			nextTowerPos = TowerNumFix( curTowerPos + (moveDir * i) );
+			isMoved = MoveRing( towers[curTowerPos], towers[nextTowerPos] );
+		}
 
+		// Change Tower
+		if (isMoved)
+		{
+			++moveCount;
+			curTowerPos = TowerNumFix( nextTowerPos + moveDir );
+			PrintTower( towers, ringCntMax );
+		}
+		else
+		{
+			curTowerPos = TowerNumFix( curTowerPos + moveDir );
+		}
+	}
+	std::cout << "움직인 횟수 : " << moveCount << std::endl;
 }
