@@ -118,7 +118,6 @@ public:
 			}
 		}
 		ShellSort( arr, size, sortSize, isPrint );
-		
 	}
 
 private:
