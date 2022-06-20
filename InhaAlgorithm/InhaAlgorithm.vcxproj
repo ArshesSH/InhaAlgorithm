@@ -140,6 +140,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Day1.cpp" />
+    <ClCompile Include="Day12.cpp" />
     <ClCompile Include="Day2.cpp" />
     <ClCompile Include="Day3.cpp" />
     <ClCompile Include="Day4.cpp" />
@@ -148,10 +149,13 @@
     <ClCompile Include="Day9.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Queue.cpp" />
+    <ClCompile Include="SortAlgorithm.cpp" />
     <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="StopWatch.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Day1.h" />
+    <ClInclude Include="Day12.h" />
     <ClInclude Include="Day2.h" />
     <ClInclude Include="Day3.h" />
     <ClInclude Include="Day4.h" />
@@ -160,7 +164,9 @@
     <ClInclude Include="Day9.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SearchAlgorithm.h" />
+    <ClInclude Include="SortAlgorithm.h" />
     <ClInclude Include="Stack.h" />
+    <ClInclude Include="StopWatch.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -6,12 +6,10 @@
 #include "Day5To7.h"
 #include "Day8.h"
 #include "Day9.h"
+#include "Day12.h"
 
 int main()
 {
-	while ( true )
-	{
-		Day9::ExTowerOfHanoi();
-	}
+	Day12::UseSelectionSort();
 	return 0;
 }
