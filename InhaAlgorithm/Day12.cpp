@@ -66,7 +66,9 @@ void Day12::UseSelectionSort()
 	int d[7] = { 6,4,8,3,1,9,7 };
 	int e[7] = { 6,4,8,3,1,9,7 };
 	int f[7] = { 6,4,8,3,1,9,7 };
-	int g[7] = { 6,4,8,3,1,9,7 };
+	int g[8] = { 8, 1, 4, 2, 7, 6, 3, 5 };
+	int h[8] = { 8, 1, 4, 2, 7, 6, 3, 5 };
+	int i[8] = { 8, 1, 4, 2, 7, 6, 3, 5 };
 
 	StopWatch timer;
 
@@ -95,5 +97,12 @@ void Day12::UseSelectionSort()
 	timer.Stop();
 	const double elapsedFourth = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	SortAlgorithm<int>::InsertSort( f, 7, true );
+	std::cout << "SelectSort 정렬 속도 : " << elapsedFourth << " ms" << std::endl;
+
+	timer.Start();
+	//SortAlgorithm<int>::ShellSort( g, 7,7, false );
+	timer.Stop();
+	//const double elapsed5 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	SortAlgorithm<int>::ShellSort( h, 8, 8, true );
 	std::cout << "SelectSort 정렬 속도 : " << elapsedFourth << " ms" << std::endl;
 }

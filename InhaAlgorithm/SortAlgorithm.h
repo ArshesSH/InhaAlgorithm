@@ -89,6 +89,38 @@ public:
 		}
 	}
 
+	static void ShellSort( T* arr, size_t size, size_t sortSize, bool isPrint = false )
+	{
+		sortSize = sortSize / 2;
+
+		if ( sortSize == 0 )
+		{
+			InsertSort(arr, size, isPrint);
+			return;
+		}
+		for ( int curPos = 0, nextPos = curPos + sortSize; nextPos < size; curPos++, nextPos++ )
+		{
+			if ( arr[curPos] > arr[nextPos] )
+			{
+				std::swap( arr[curPos], arr[nextPos] );
+			}
+			for ( int prevPos = curPos - sortSize, startPos = curPos; prevPos >= 0; startPos -= sortSize, prevPos -= sortSize )
+			{
+				if ( arr[prevPos] > arr[startPos] )
+				{
+					std::swap( arr[prevPos], arr[startPos] );
+				}
+			}
+
+			if ( isPrint )
+			{
+				PrintSelectionSort( arr, size, curPos, nextPos );
+			}
+		}
+		ShellSort( arr, size, sortSize, isPrint );
+		
+	}
+
 private:
 	static void PrintSelectionSort(T* arr, size_t size, size_t curPos, size_t targetPos)
 	{
