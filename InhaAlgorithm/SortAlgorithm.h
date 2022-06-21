@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <stack>
 
 template<typename T>
 class SortAlgorithm
@@ -118,6 +119,92 @@ public:
 			}
 		}
 		ShellSort( arr, size, sortSize, isPrint );
+	}
+
+	static void QuickSortRecursion( T* arr, size_t arrSize, int lowIdx, int highIdx, bool isPrint = false )
+	{
+		if ( lowIdx < highIdx )
+		{
+			int pivot = highIdx;
+			int targetPos = lowIdx - 1;
+
+			// Partition
+			while ( pivot != targetPos )
+			{
+				if ( pivot > targetPos )
+				{
+					++targetPos;
+					if ( arr[pivot] < arr[targetPos] )
+					{
+						std::swap( arr[pivot], arr[targetPos] );
+						std::swap( pivot, targetPos );
+					}
+				}
+				else if ( pivot < targetPos )
+				{
+					--targetPos;
+					if ( arr[pivot] > arr[targetPos] )
+					{
+						std::swap( arr[pivot], arr[targetPos] );
+						std::swap( pivot, targetPos );
+					}
+				}
+				if ( isPrint )
+				{
+					PrintSelectionSort( arr, arrSize, pivot, targetPos );
+				}
+			}
+
+			QuickSortRecursion( arr, arrSize, lowIdx, pivot - 1, isPrint );
+			QuickSortRecursion( arr, arrSize, pivot + 1, highIdx, isPrint );
+		}
+	}
+	
+	static void QuickSortStack( T* arr, size_t arrSize, int lowIdx, int highIdx, bool isPrint = false )
+	{
+		std::stack<std::pair<int, int>> idxStack;
+
+		idxStack.push( { lowIdx, highIdx } );
+
+		while ( !idxStack.empty() )
+		{
+			int pivot = idxStack.top().second;
+			int targetPos = idxStack.top().first - 1;
+			idxStack.pop();
+
+			if ( targetPos < pivot )
+			{
+				// Partition
+				while ( pivot != targetPos )
+				{
+					if ( pivot > targetPos )
+					{
+						++targetPos;
+						if ( arr[pivot] < arr[targetPos] )
+						{
+							std::swap( arr[pivot], arr[targetPos] );
+							std::swap( pivot, targetPos );
+						}
+					}
+					else if ( pivot < targetPos )
+					{
+						--targetPos;
+						if ( arr[pivot] > arr[targetPos] )
+						{
+							std::swap( arr[pivot], arr[targetPos] );
+							std::swap( pivot, targetPos );
+						}
+					}
+					if ( isPrint )
+					{
+						PrintSelectionSort( arr, arrSize, pivot, targetPos );
+					}
+				}
+
+				idxStack.push( { pivot + 1, highIdx } );
+				idxStack.push( { lowIdx, pivot - 1 } );
+			}
+		}
 	}
 
 private:

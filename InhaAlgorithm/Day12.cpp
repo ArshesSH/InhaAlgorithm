@@ -82,7 +82,7 @@ void Day12::UseSelectionSort()
 	const double elapsedFirst = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::SelectionSort( arr, size, true );
 	std::cout << "1번째 방식 정렬 속도 : " << elapsedFirst << " ms" << std::endl;	
-
+	
 	copy = origin;
 	timer.Start();
 	SortAlgorithm<int>::SelectionSortAlt( arr, size, false );
@@ -116,5 +116,13 @@ void Day12::UseSelectionSort()
 	copy = origin;
 	const double elapsed5 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::ShellSort( arr, size, size, true );
-	std::cout << "shellSort 정렬 속도 : " << elapsedFourth << " ms" << std::endl;
+	std::cout << "shellSort 정렬 속도 : " << elapsed5 << " ms" << std::endl;
+
+	int a[] = { 5,7,1,4,6,2,3,9,8 };
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::QuickSortStack( a, 9, 0, 8, true );
+	timer.Stop();
+	const double elapsed6 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "QuickSort 정렬 속도 : " << elapsed6 << " ms" << std::endl;
 }
