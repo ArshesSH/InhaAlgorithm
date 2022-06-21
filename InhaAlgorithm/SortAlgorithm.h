@@ -7,7 +7,7 @@ template<typename T>
 class SortAlgorithm
 {
 public:
-	static void BubbleSort( T* arr, size_t size )
+	static void BubbleSort( T* arr, size_t size, bool isPrint = false )
 	{
 		bool isFinished = false;
 
@@ -22,11 +22,34 @@ public:
 					std::swap( arr[curPos], arr[nextPos] );
 					isChanged = true;
 				}
+				if ( isPrint )
+				{
+					PrintSortArr( arr, size, curPos, nextPos );
+				}
 			}
 			if ( !isChanged )
 			{
 				isFinished = !isChanged;
 				return;
+			}
+		}
+	}
+
+	static void BubbleSortOrigin( T* arr, size_t size, bool isPrint = false )
+	{
+		int i, j;
+		for ( i = 0; i < size - 1; i++ )
+		{
+			for ( j = 0; j < size - i - 1; j++ )
+			{
+				if ( arr[j] > arr[j + 1] )
+				{
+					std::swap( arr[j], arr[j + 1] );
+				}
+				if ( isPrint )
+				{
+					PrintSortArr( arr, size, i, j );
+				}
 			}
 		}
 	}
@@ -45,7 +68,7 @@ public:
 				}
 				if ( isPrint )
 				{
-					PrintSelectionSort( arr, size, curPos, nextPos );
+					PrintSortArr( arr, size, curPos, nextPos );
 				}
 			}
 		}
@@ -67,10 +90,11 @@ public:
 			std::swap( arr[curPos], arr[targetPos] );
 			if ( isPrint )
 			{
-				PrintSelectionSort( arr, size, curPos, targetPos );
+				PrintSortArr( arr, size, curPos, targetPos );
 			}
 		}
 	}
+
 	static void InsertSort( T* arr, size_t size, bool isPrint = false )
 	{
 		
@@ -84,7 +108,7 @@ public:
 				}
 				if ( isPrint )
 				{
-					PrintSelectionSort( arr, size, curPos, curPos - 1 );
+					PrintSortArr( arr, size, curPos, curPos - 1 );
 				}
 			}
 		}
@@ -115,7 +139,7 @@ public:
 
 			if ( isPrint )
 			{
-				PrintSelectionSort( arr, size, curPos, nextPos );
+				PrintSortArr( arr, size, curPos, nextPos );
 			}
 		}
 		ShellSort( arr, size, sortSize, isPrint );
@@ -151,7 +175,7 @@ public:
 				}
 				if ( isPrint )
 				{
-					PrintSelectionSort( arr, arrSize, pivot, targetPos );
+					PrintSortArr( arr, arrSize, pivot, targetPos );
 				}
 			}
 
@@ -168,12 +192,14 @@ public:
 
 		while ( !idxStack.empty() )
 		{
-			int pivot = idxStack.top().second;
-			int targetPos = idxStack.top().first - 1;
+			highIdx = idxStack.top().second;
+			lowIdx = idxStack.top().first;
 			idxStack.pop();
 
-			if ( targetPos < pivot )
+			if ( lowIdx < highIdx )
 			{
+				int pivot = highIdx;
+				int targetPos = lowIdx - 1;
 				// Partition
 				while ( pivot != targetPos )
 				{
@@ -197,7 +223,7 @@ public:
 					}
 					if ( isPrint )
 					{
-						PrintSelectionSort( arr, arrSize, pivot, targetPos );
+						PrintSortArr( arr, arrSize, pivot, targetPos );
 					}
 				}
 
@@ -208,7 +234,7 @@ public:
 	}
 
 private:
-	static void PrintSelectionSort(T* arr, size_t size, size_t curPos, size_t targetPos)
+	static void PrintSortArr(T* arr, size_t size, size_t curPos, size_t targetPos)
 	{
 		for ( size_t i = 0; i < size; ++i )
 		{

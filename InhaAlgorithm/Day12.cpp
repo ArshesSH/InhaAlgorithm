@@ -4,6 +4,7 @@
 #include <vector>
 #include "StopWatch.h"
 #include "SortAlgorithm.h"
+#include <random>
 
 void BubbleSort(int* targetArr, int arrSize)
 {
@@ -62,12 +63,25 @@ void Day12::UseBubbleSort()
 void Day12::UseSelectionSort()
 {
 	std::vector<int> origin;
-	constexpr int size = 100;
+
+	constexpr int size = 10000;
 	origin.reserve( size );
+
+	// For Reverse
 	for ( int i = 0; i < size; i++ )
 	{
 		origin.push_back( size - i);
 	}
+
+	// For Random
+	//std::random_device rd;
+	//std::mt19937 rng( rd() );
+	//std::uniform_int_distribution<int> randGen( 0, size );
+	//for ( int i = 0; i < size; i++ )
+	//{
+	//	origin.push_back( randGen( rng ) );
+	//}
+
 
 	std::vector<int> copy = origin;
 
@@ -75,39 +89,40 @@ void Day12::UseSelectionSort()
 	StopWatch timer;
 
 	int* arr = &copy[0];
+
 	timer.Start();
 	SortAlgorithm<int>::SelectionSort( arr, size, false );
 	timer.Stop();
 	//copy = origin;
-	const double elapsedFirst = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	const double elapsed1 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::SelectionSort( arr, size, true );
-	std::cout << "1번째 방식 정렬 속도 : " << elapsedFirst << " ms" << std::endl;	
+	std::cout << "SelectionSort 1 속도 : " << elapsed1 << " ms" << std::endl;
 	
 	copy = origin;
 	timer.Start();
 	SortAlgorithm<int>::SelectionSortAlt( arr, size, false );
 	timer.Stop();
 	//copy = origin;
-	const double elapsedSecond = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	const double elapsed2 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::SelectionSortAlt( arr, size, true );
-	std::cout << "2번째 방식 정렬 속도 : " << elapsedSecond << " ms" << std::endl;
+	std::cout << "SelectionSort 2 속도 : " << elapsed2 << " ms" << std::endl;
 
 	copy = origin;
 	timer.Start();
 	SortAlgorithm<int>::BubbleSort( arr, size );
 	timer.Stop();
 	//copy = origin;
-	const double elapsedThird = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
-	std::cout << "BubbleSort 속도 : " << elapsedSecond << " ms" << std::endl;
+	const double elapsed3 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "BubbleSort 속도 : " << elapsed3 << " ms" << std::endl;
 
 	copy = origin;
 	timer.Start();
 	SortAlgorithm<int>::InsertSort( arr, size, false );
 	timer.Stop();
 	//copy = origin;
-	const double elapsedFourth = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	const double elapsed4 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::InsertSort( arr, size, true );
-	std::cout << "SelectSort 정렬 속도 : " << elapsedFourth << " ms" << std::endl;
+	std::cout << "SelectSort 정렬 속도 : " << elapsed4 << " ms" << std::endl;
 
 	copy = origin;
 	timer.Start();
@@ -118,10 +133,9 @@ void Day12::UseSelectionSort()
 	//SortAlgorithm<int>::ShellSort( arr, size, size, true );
 	std::cout << "shellSort 정렬 속도 : " << elapsed5 << " ms" << std::endl;
 
-	int a[] = { 5,7,1,4,6,2,3,9,8 };
 	copy = origin;
 	timer.Start();
-	SortAlgorithm<int>::QuickSortStack( a, 9, 0, 8, true );
+	SortAlgorithm<int>::QuickSortStack( arr, size, 0, size-1, false );
 	timer.Stop();
 	const double elapsed6 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "QuickSort 정렬 속도 : " << elapsed6 << " ms" << std::endl;
