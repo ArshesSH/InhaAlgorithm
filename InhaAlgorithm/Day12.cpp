@@ -139,4 +139,7 @@ void Day12::UseSelectionSort()
 	timer.Stop();
 	const double elapsed6 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "QuickSort 정렬 속도 : " << elapsed6 << " ms" << std::endl;
+
+	int a[] = { 2,8,5,3,9,4,1,7 };
+
 }

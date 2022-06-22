@@ -233,6 +233,43 @@ public:
 		}
 	}
 
+	static std::shared_ptr<T[]> Merge( std::shared_ptr<T[]> arrL, std::shared_ptr<T[]> arrR )
+	{
+		int arrLSize = sizeof( arrL ) / sizeof( T );
+		int arrRSize = sizeof( arrR ) / sizeof( T );
+		int arrMergedSize = arrLSize + arrRSize;
+		std::shared_ptr<T[]> pArrMerged = std::make_shared<T[]>(arrMergedSize);
+
+		for ( int i = 0, l = 0, r = 0; i < arrMergedSize; ++i )
+		{
+			if ( arrL[l] < arrR[r] )
+			{
+				pArrMerged[i] = arrL[l];
+				l++;
+			}
+			else
+			{
+				pArrMerged[i] = arrL[r];
+				r++;
+			}
+		}
+		return std::move(pArrMerged);
+	}
+
+	static std::shared_ptr<T[]> MergeSort( std::shared_ptr<T[]> arr, size_t arrSize, bool isPrint = false )
+	{
+		const int size = arrSize / 2;
+		if ( size == 1 )
+		{
+			return arr;
+		}
+		
+		auto arrL = MergeSort( arr, size, isPrint );
+		auto arrR = MergeSort( arr, size, isPrint );
+
+		return std::move(Merge( arrL, arrR ));
+	}
+
 private:
 	static void PrintSortArr(T* arr, size_t size, size_t curPos, size_t targetPos)
 	{
