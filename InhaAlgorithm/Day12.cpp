@@ -137,9 +137,16 @@ void Day12::UseSelectionSort()
 	timer.Start();
 	SortAlgorithm<int>::QuickSortStack( arr, size, 0, size-1, false );
 	timer.Stop();
+	copy = origin;
 	const double elapsed6 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "QuickSort 정렬 속도 : " << elapsed6 << " ms" << std::endl;
 
-	int a[] = { 2,8,5,3,9,4,1,7 };
 
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::MergeSort( arr, size, false );
+	timer.Stop();
+	copy = origin;
+	const double elapsed7 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "MergeSort 정렬 속도 : " << elapsed7 << " ms" << std::endl;
 }

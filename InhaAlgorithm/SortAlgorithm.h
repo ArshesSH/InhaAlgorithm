@@ -233,41 +233,67 @@ public:
 		}
 	}
 
-	static std::shared_ptr<T[]> Merge( std::shared_ptr<T[]> arrL, std::shared_ptr<T[]> arrR )
+	static void Merge( T* arr, T* mergeArr, int originSize, int lowIdx, int midIdx, int highIdx, bool isPrint = false )
 	{
-		int arrLSize = sizeof( arrL ) / sizeof( T );
-		int arrRSize = sizeof( arrR ) / sizeof( T );
-		int arrMergedSize = arrLSize + arrRSize;
-		std::shared_ptr<T[]> pArrMerged = std::make_shared<T[]>(arrMergedSize);
-
-		for ( int i = 0, l = 0, r = 0; i < arrMergedSize; ++i )
+		for ( int i = lowIdx; i <= highIdx; ++i )
 		{
-			if ( arrL[l] < arrR[r] )
+			mergeArr[i] = arr[i];
+		}
+
+		int leftIdx = lowIdx;
+		int rightIdx = midIdx + 1;
+		int arrIdx = lowIdx;
+		for ( ; leftIdx <= midIdx && rightIdx <= highIdx; ++arrIdx )
+		{
+			if ( mergeArr[leftIdx] <= mergeArr[rightIdx] )
 			{
-				pArrMerged[i] = arrL[l];
-				l++;
+				arr[arrIdx] = mergeArr[leftIdx];
+				++leftIdx;
+				if ( isPrint )
+				{
+					PrintSortArr( arr, originSize, arrIdx, leftIdx );
+				}
 			}
 			else
 			{
-				pArrMerged[i] = arrL[r];
-				r++;
+				arr[arrIdx] = mergeArr[rightIdx];
+				++rightIdx;
+				if ( isPrint )
+				{
+					PrintSortArr( arr, originSize, arrIdx, rightIdx );
+				}
+			}
+
+		}
+		for ( int i = 0; i <= midIdx - leftIdx; ++i )
+		{
+			arr[arrIdx + i] = mergeArr[leftIdx + i];
+			if ( isPrint )
+			{
+				PrintSortArr( arr, originSize, arrIdx, leftIdx );
 			}
 		}
-		return std::move(pArrMerged);
 	}
 
-	static std::shared_ptr<T[]> MergeSort( std::shared_ptr<T[]> arr, size_t arrSize, bool isPrint = false )
+	static void MergeSort( T* arr, int originSize, bool isPrint = false )
 	{
-		const int size = arrSize / 2;
-		if ( size == 1 )
+		T* mergeArr = new T[originSize];
+		DoMergeSort( arr, mergeArr, originSize, 0, originSize - 1, isPrint );
+		if ( isPrint )
 		{
-			return arr;
+			PrintSortArr( arr, originSize, 0, 0 );
 		}
-		
-		auto arrL = MergeSort( arr, size, isPrint );
-		auto arrR = MergeSort( arr, size, isPrint );
+	}
 
-		return std::move(Merge( arrL, arrR ));
+	static void DoMergeSort( T* arr, T* mergeArr, int originSize, int lowIdx, int highIdx, bool isPrint = false )
+	{
+		if ( lowIdx < highIdx )
+		{
+			int size = (highIdx + lowIdx) / 2;
+			DoMergeSort( arr, mergeArr, originSize, lowIdx, size, isPrint );
+			DoMergeSort( arr, mergeArr, originSize, size + 1, highIdx, isPrint );
+			Merge( arr, mergeArr, originSize, lowIdx, size, highIdx, isPrint );
+		}
 	}
 
 private:
