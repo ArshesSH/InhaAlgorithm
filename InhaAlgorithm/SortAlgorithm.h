@@ -296,6 +296,133 @@ public:
 		}
 	}
 
+	static void MakeMaxHeapBook( T* arr, int arrSize, int left, int right, bool isPrint = false )
+	{
+		int root = arr[left];
+		int bigChildIdx;
+		int parentIdx = left;
+		for ( ; parentIdx < (right + 1) / 2; parentIdx = bigChildIdx )
+		{
+			const int leftChildIdx = parentIdx * 2 + 1;
+			const int rightChildIdx = leftChildIdx + 1;
+			if ( rightChildIdx <= right && arr[leftChildIdx] < arr[rightChildIdx] )
+			{
+				bigChildIdx = rightChildIdx;
+			}
+			else
+			{
+				bigChildIdx = leftChildIdx;
+			}
+			if ( root >= arr[bigChildIdx] )
+			{
+				break;
+			}
+			arr[parentIdx] = arr[bigChildIdx];
+
+			if ( isPrint )
+			{
+				PrintSortArr( arr, arrSize, parentIdx, bigChildIdx );
+			}
+		}
+		arr[parentIdx] = root;
+
+		if ( isPrint )
+		{
+			PrintSortArr( arr, arrSize, parentIdx, parentIdx );
+		}
+	}
+
+	static void HeapSortBook( T* arr, size_t arrSize, bool isPrint = false )
+	{
+		for ( int i = (arrSize - 1) / 2; i >= 0; --i )
+		{
+			MakeMaxHeap( arr, arrSize, i, arrSize - 1, isPrint );
+		}
+		for ( int i = arrSize - 1; i > 0; --i )
+		{
+			std::swap( arr[0], arr[i] );
+			MakeMaxHeap( arr, arrSize, 0, i - 1, isPrint );
+		}
+		if ( isPrint )
+		{
+			PrintSortArr( arr, arrSize, 0, 0 );
+		}
+	}
+
+	static void MakeHeap( T* arr, int arrSize, bool isPrint = false)
+	{
+		int parentIdx = (arrSize-2) / 2;
+		int bigChildIdx = parentIdx * 2 + 1;
+		for ( ; parentIdx >= 0; --parentIdx )
+		{
+			const int childLeftIdx = parentIdx * 2 + 1;
+			const int childRightIdx = childLeftIdx + 1;
+
+			
+			if ( childRightIdx <= arrSize && arr[childRightIdx] >= arr[childLeftIdx] )
+			{
+				bigChildIdx = childRightIdx;
+			}
+			else
+			{
+				bigChildIdx = childLeftIdx;
+			}
+			
+			if ( arr[bigChildIdx] > arr[parentIdx] )
+			{
+				std::swap( arr[parentIdx], arr[bigChildIdx] );
+			}
+
+			if ( isPrint )
+			{
+				PrintSortArr( arr, arrSize+1, parentIdx, bigChildIdx );
+			}
+
+		}
+		parentIdx = bigChildIdx;
+		for ( ; parentIdx * 2 + 1 < arrSize; )
+		{
+			const int childLeftIdx = parentIdx * 2 + 1;
+			const int childRightIdx = childLeftIdx + 1;
+
+			int bigChildIdx = childLeftIdx;
+			if ( childRightIdx <= arrSize && arr[childRightIdx] >= arr[childLeftIdx] )
+			{
+				bigChildIdx = childRightIdx;
+			}
+			else
+			{
+				bigChildIdx = childLeftIdx;
+			}
+
+			if ( arr[bigChildIdx] > arr[parentIdx] )
+			{
+				std::swap( arr[parentIdx], arr[bigChildIdx] );
+				parentIdx = bigChildIdx;
+			}
+			if ( isPrint )
+			{
+				PrintSortArr( arr, arrSize+1, parentIdx, bigChildIdx );
+			}
+		}
+	}
+
+	static void HeapSort( T* arr, size_t arrSize, bool isPrint = false )
+	{
+		
+		for ( int i = arrSize - 1; i > 0; --i )
+		{
+			MakeHeap( arr, i, isPrint );
+			std::swap( arr[0], arr[i] );
+			if ( isPrint )
+			{
+				PrintSortArr( arr, arrSize, i, 0 );
+			}
+		}
+
+	}
+
+
 private:
 	static void PrintSortArr(T* arr, size_t size, size_t curPos, size_t targetPos)
 	{

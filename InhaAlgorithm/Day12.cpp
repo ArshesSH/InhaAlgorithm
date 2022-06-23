@@ -89,7 +89,7 @@ void Day12::UseSelectionSort()
 	StopWatch timer;
 
 	int* arr = &copy[0];
-
+	/*
 	timer.Start();
 	SortAlgorithm<int>::SelectionSort( arr, size, false );
 	timer.Stop();
@@ -149,4 +149,14 @@ void Day12::UseSelectionSort()
 	copy = origin;
 	const double elapsed7 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "MergeSort 정렬 속도 : " << elapsed7 << " ms" << std::endl;
+	*/
+
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::HeapSort( arr, size, false );
+	timer.Stop();
+	copy = origin;
+	const double elapsed8 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "HeapSort 정렬 속도 : " << elapsed8 << " ms" << std::endl;
+
 }
