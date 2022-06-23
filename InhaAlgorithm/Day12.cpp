@@ -68,19 +68,19 @@ void Day12::UseSelectionSort()
 	origin.reserve( size );
 
 	// For Reverse
-	for ( int i = 0; i < size; i++ )
-	{
-		origin.push_back( size - i);
-	}
-
-	// For Random
-	//std::random_device rd;
-	//std::mt19937 rng( rd() );
-	//std::uniform_int_distribution<int> randGen( 0, size );
 	//for ( int i = 0; i < size; i++ )
 	//{
-	//	origin.push_back( randGen( rng ) );
+	//	origin.push_back( size - i);
 	//}
+
+	// For Random
+	std::random_device rd;
+	std::mt19937 rng( rd() );
+	std::uniform_int_distribution<int> randGen( 0, size );
+	for ( int i = 0; i < size; i++ )
+	{
+		origin.push_back( randGen( rng ) );
+	}
 
 
 	std::vector<int> copy = origin;
@@ -89,7 +89,7 @@ void Day12::UseSelectionSort()
 	StopWatch timer;
 
 	int* arr = &copy[0];
-	/*
+
 	timer.Start();
 	SortAlgorithm<int>::SelectionSort( arr, size, false );
 	timer.Stop();
@@ -149,7 +149,8 @@ void Day12::UseSelectionSort()
 	copy = origin;
 	const double elapsed7 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "MergeSort 정렬 속도 : " << elapsed7 << " ms" << std::endl;
-	*/
+
+	//int a[] = { 22,5,11,32,120,68,70};
 
 	copy = origin;
 	timer.Start();
@@ -157,6 +158,13 @@ void Day12::UseSelectionSort()
 	timer.Stop();
 	copy = origin;
 	const double elapsed8 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
-	std::cout << "HeapSort 정렬 속도 : " << elapsed8 << " ms" << std::endl;
+	std::cout << "Heap Sort 속도 : " << elapsed8 << " ms" << std::endl;
 
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::HeapSortBook( arr, size, false );
+	timer.Stop();
+	copy = origin;
+	const double elapsed9 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "Heap Sort Book 속도 : " << elapsed9 << " ms" << std::endl;
 }

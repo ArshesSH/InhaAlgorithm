@@ -336,12 +336,12 @@ public:
 	{
 		for ( int i = (arrSize - 1) / 2; i >= 0; --i )
 		{
-			MakeMaxHeap( arr, arrSize, i, arrSize - 1, isPrint );
+			MakeMaxHeapBook( arr, arrSize, i, arrSize - 1, isPrint );
 		}
 		for ( int i = arrSize - 1; i > 0; --i )
 		{
 			std::swap( arr[0], arr[i] );
-			MakeMaxHeap( arr, arrSize, 0, i - 1, isPrint );
+			MakeMaxHeapBook( arr, arrSize, 0, i - 1, isPrint );
 		}
 		if ( isPrint )
 		{
@@ -358,7 +358,6 @@ public:
 			const int childLeftIdx = parentIdx * 2 + 1;
 			const int childRightIdx = childLeftIdx + 1;
 
-			
 			if ( childRightIdx <= arrSize && arr[childRightIdx] >= arr[childLeftIdx] )
 			{
 				bigChildIdx = childRightIdx;
@@ -400,6 +399,10 @@ public:
 				std::swap( arr[parentIdx], arr[bigChildIdx] );
 				parentIdx = bigChildIdx;
 			}
+			else
+			{
+				break;
+			}
 			if ( isPrint )
 			{
 				PrintSortArr( arr, arrSize+1, parentIdx, bigChildIdx );
@@ -419,7 +422,6 @@ public:
 				PrintSortArr( arr, arrSize, i, 0 );
 			}
 		}
-
 	}
 
 
