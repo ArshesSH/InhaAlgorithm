@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <stack>
+#include <map>
 
 template<typename T>
 class SortAlgorithm
@@ -420,6 +421,50 @@ public:
 			if ( isPrint )
 			{
 				PrintSortArr( arr, arrSize, i, 0 );
+			}
+		}
+	}
+
+	static void CountingSort( int* arr, size_t arrSize, int maxNum)
+	{
+		int* countArr = new int[maxNum + 1]();
+		int* resultArr = new int[maxNum]();
+
+		for ( int i = 0; i < arrSize; ++i )
+		{
+			++countArr[arr[i]];
+		}
+		for ( int i = 1; i <= maxNum; ++i )
+		{
+			countArr[i] += countArr[i - 1];
+		}
+		for ( int i = 0; i < arrSize; ++i )
+		{
+			resultArr[--countArr[arr[i]]] = arr[i];
+		}
+		for ( int i = 0; i < arrSize; ++i )
+		{
+			arr[i] = resultArr[i];
+		}
+		delete[] countArr;
+		delete[] resultArr;
+	}
+
+	static void CountingSortMap( int* arr, size_t arrSize )
+	{
+		std::map<int, int> countingMap;
+		for ( int i = 0; i < arrSize; ++i )
+		{
+			countingMap[arr[i]]++;
+		}
+
+		int i = 0;
+		for ( auto e : countingMap )
+		{
+			const int count = e.second;
+			for ( int j = 0; j < e.second; ++j )
+			{
+				arr[i++] = e.first;
 			}
 		}
 	}

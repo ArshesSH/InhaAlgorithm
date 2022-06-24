@@ -97,7 +97,7 @@ void Day12::UseSelectionSort()
 	const double elapsed1 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	//SortAlgorithm<int>::SelectionSort( arr, size, true );
 	std::cout << "SelectionSort 1 加档 : " << elapsed1 << " ms" << std::endl;
-	
+
 	copy = origin;
 	timer.Start();
 	SortAlgorithm<int>::SelectionSortAlt( arr, size, false );
@@ -167,4 +167,21 @@ void Day12::UseSelectionSort()
 	copy = origin;
 	const double elapsed9 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
 	std::cout << "Heap Sort Book 加档 : " << elapsed9 << " ms" << std::endl;
+
+
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::CountingSort( arr, size, size+1 );
+	timer.Stop();
+	copy = origin;
+	const double elapsed10 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "Counting Sort 加档 : " << elapsed10 << " ms" << std::endl;
+
+	copy = origin;
+	timer.Start();
+	SortAlgorithm<int>::CountingSortMap( arr, size );
+	timer.Stop();
+	copy = origin;
+	const double elapsed11 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "Counting Sort by std::map 加档 : " << elapsed11 << " ms" << std::endl;
 }
