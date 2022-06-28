@@ -8,8 +8,11 @@
 #include "Day9.h"
 #include "Day12.h"
 
+#include "Day19.h"
+
+
 int main()
 {
-	Day12::UseSelectionSort();
+	Day19::ExSearchString();
 	return 0;
 }
