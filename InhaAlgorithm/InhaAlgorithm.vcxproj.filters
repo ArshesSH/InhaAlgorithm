@@ -104,7 +104,7 @@
     <ClInclude Include="Day19.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="StringSercher.h">
+    <ClInclude Include="StringSearcher.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

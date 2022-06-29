@@ -169,7 +169,7 @@
     <ClInclude Include="SortAlgorithm.h" />
     <ClInclude Include="Stack.h" />
     <ClInclude Include="StopWatch.h" />
-    <ClInclude Include="StringSercher.h" />
+    <ClInclude Include="StringSearcher.h" />
     <ClInclude Include="Timer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
