@@ -228,7 +228,14 @@ int FindStr_BoyerMoore(const char* srcStr, const char* subStr, int subStrSize, b
 
 		const int curPos = srcStr[searchIdx] ;
 		const int moveAmount = badMatchTable[curPos];
-		srcIdx += moveAmount - matchCount;
+		if ( moveAmount == subStrSize )
+		{
+			srcIdx += moveAmount - matchCount;
+		}
+		else
+		{
+			srcIdx = moveAmount;
+		}
 	}
 	return -1;
 }
