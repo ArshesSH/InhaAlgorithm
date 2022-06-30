@@ -166,3 +166,69 @@ int FindSubStr_KMP( const char* srcStr, const char* subStr, int subStrSize, bool
 	delete[] patternArr;
 	return -1;
 }
+
+void CreateBadMatchTable( const char* subStr, int* table, int subStrSize, int tableSize, bool isPrintStr = false )
+{
+	for ( int subIdx = 0; subIdx < subStrSize - 1; ++subIdx )
+	{
+		const int charPos = subStr[subIdx];
+		table[charPos] = subStrSize - subIdx - 1;
+	}
+	for ( int i = 0; i < tableSize; ++i )
+	{
+		if ( table[i] == 0 )
+		{
+			table[i] = subStrSize;
+		}
+	}
+	
+	if ( isPrintStr )
+	{
+		printf( "Table : " );
+		for ( int i = 0; i < tableSize; ++i )
+		{
+			if ( table[i] != subStrSize )
+			{
+				printf( "%c:%d  ", (i), table[i]);
+			}
+		}
+		printf( "\n" );
+	}
+}
+
+int FindStr_BoyerMoore(const char* srcStr, const char* subStr, int subStrSize, bool isPrintStr = false)
+{
+	constexpr int tableSize = 93;
+	int badMatchTable[tableSize] = { 0, };
+
+	CreateBadMatchTable( subStr, badMatchTable, subStrSize, tableSize, isPrintStr );
+
+	for ( int srcIdx = 0; srcStr[srcIdx] != '\0';)
+	{
+		int subIdx = subStrSize - 1;
+		int searchIdx = srcIdx + subIdx;
+		int matchCount = 0;
+
+		for ( ; srcStr[searchIdx] == subStr[subIdx]; --subIdx, --searchIdx, ++matchCount )
+		{
+			if ( isPrintStr )
+			{
+				PrintKMP( srcStr, subStr, searchIdx, subIdx, srcIdx );
+			}
+		}
+		if ( isPrintStr )
+		{
+			PrintKMP( srcStr, subStr, searchIdx, subIdx, srcIdx );
+		}
+		
+		if ( subIdx == -1 )
+		{
+			return srcIdx;
+		}
+
+		const int curPos = srcStr[searchIdx] ;
+		const int moveAmount = badMatchTable[curPos];
+		srcIdx += moveAmount - matchCount;
+	}
+	return -1;
+}

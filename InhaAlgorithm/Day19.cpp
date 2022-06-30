@@ -13,16 +13,23 @@ void Day19::ExSearchString()
 	timer.Start();
 	FindSubStr_Brute( str1.c_str(), str2.c_str(), false );
 	timer.Stop();
-
 	const double elapsed1 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
-	std::cout << "걸린 시간 : " << elapsed1 << std::endl;
+	std::cout << "Brute Force Time : " << elapsed1 << std::endl;
 
 
 	timer.Start();
-	//FindSubStr_KMP( str1.c_str(), str2.c_str(), str2.size(), false );
+	FindSubStr_KMP( str1.c_str(), str2.c_str(), str2.size(), false );
+	timer.Stop();
+	//FindSubStr_KMP( str1.c_str(), str2.c_str(), str2.size(), true );
+	const double elapsed2 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "KMP Time : " << elapsed2 << std::endl;
+
+	timer.Start();
+	//FindStr_BoyerMoore( str1.c_str(), str2.c_str(), str2.size(), false );
 	timer.Stop();
 
-	FindSubStr_KMP( str1.c_str(), str2.c_str(), str2.size(), true );
-	const double elapsed2 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
-	std::cout << "걸린 시간 : " << elapsed1 << std::endl;
+	FindStr_BoyerMoore( str1.c_str(), str2.c_str(), str2.size(), true );
+	const double elapsed3 = timer.GetElapsedTime<double, (int)StopWatch::TimeUnit::Milli>();
+	std::cout << "BoyerMoore Time : " << elapsed3 << std::endl;
 }
+
