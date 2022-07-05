@@ -13,6 +13,6 @@
 
 int main()
 {
-	Day19::ExSearchString();
+	Day19::UseCustomStack();
 	return 0;
 }

@@ -36,9 +36,6 @@
     <ClCompile Include="Day8.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Stack.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -83,7 +80,7 @@
     <ClInclude Include="Day8.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Stack.h">
+    <ClInclude Include="LinkedList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Queue.h">
