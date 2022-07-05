@@ -33,7 +33,6 @@ public:
 			return tmp;
 		}
 
-
 		T GetData() const
 		{
 			return data;
@@ -59,8 +58,6 @@ public:
 			pNext = nullptr;
 			return pTmp;
 		}
-
-	public:
 
 	private:
 		T data;
@@ -128,6 +125,10 @@ public:
 		{
 			auto tmp = std::make_shared<Element>( data, pCur->GetNext() );
 			pCur->GetNext() = tmp;
+			if ( tmp->GetNext() == nullptr )
+			{
+				pTail = tmp;
+			}
 		}
 		++size;
 	}
@@ -154,42 +155,48 @@ public:
 		}
 	}
 
-	void DeleteNodeAtPos( int pos )
+	bool DeleteNodeAtPos( int pos )
 	{
 		if ( !Empty() )
 		{
-			if ( pos > size )
-			{
-				pos = size;
-			}
-
-			auto pCur = pHead;
-			for ( int i = 0; i < pos - 1; ++i )
-			{
-				pCur = pCur->GetNext();
-			}
-
 			if ( pos == 0 )
 			{
-				PopFromHead( data );
-			}
-			else if ( pos == size )
-			{
-
+				pHead = pHead->GetNext();
+				--size;
+				return true;
 			}
 			else
 			{
+				if ( pos > size )
+				{
+					return false;
+				}
 
+				auto pPrev = pHead;
+				for ( int i = 0; i < pos - 1; ++i )
+				{
+					pPrev = pPrev->GetNext();
+				}
+
+				auto pCur = pPrev->GetNext();
+
+				if ( pCur == pTail )
+				{
+					pTail = pPrev;
+				}
+				pPrev->GetNext() = pCur->GetNext();
+				--size;
+				return true;
 			}
-			--size;
 		}
+		return false;
 	}
 
 	template<typename F>
-	int Find( T data, F compairFunc ) const
+	int FindPos( T data, F compairFunc ) const
 	{
 		std::shared_ptr<Element> pCur = pHead;
-		size_t i = 0;
+		int i = 0;
 		for (  ; pCur != nullptr; ++i )
 		{
 			if ( compairFunc( data, pCur->GetData() ) )
@@ -201,10 +208,29 @@ public:
 				pCur = pCur->GetNext();
 			}
 		}
-		return -1;
+		return i;
 	}
 
-	size_t Size() const
+	template<typename F>
+	T FindIf( T data, F compairFunc ) const
+	{
+		std::shared_ptr<Element> pCur = pHead;
+		int i = 0;
+		for ( ; pCur != nullptr; ++i )
+		{
+			if ( compairFunc( data, pCur->GetData() ) )
+			{
+				return pCur->GetData();
+			}
+			else
+			{
+				pCur = pCur->GetNext();
+			}
+		}
+		return T{};
+	}
+
+	int Size() const
 	{
 		return size;
 	}
@@ -213,9 +239,18 @@ public:
 	{
 		return pHead == nullptr;
 	}
+
+	template<typename F>
+	void DoListLoop( F functor )
+	{
+		for ( std::shared_ptr<Element> pCur = pHead; pCur != nullptr; pCur = pCur->GetNext() )
+		{
+			functor((T*)pCur.get());
+		}
+	}
 	
 private:
 	std::shared_ptr<Element> pHead = nullptr;
 	std::shared_ptr<Element> pTail = nullptr;
-	size_t size = 0;
+	int size = 0;
 };
