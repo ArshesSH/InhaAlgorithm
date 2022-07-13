@@ -257,13 +257,9 @@ void Day19::TestBinaryTree()
 	BinarySearchTree<int> tree;
 	
 	tree.Add( 3 );
-	tree.Add( 3 );
-	tree.Add( 1 );
 	tree.Add( 2 );
-	tree.Add( 0 );
+	tree.Add( 1 );
 	tree.Add( 4 );
-	auto a = tree.Search( 0 );
-
 	tree.Remove( 4 );
 
 	tree.DoAscendingLoop(
