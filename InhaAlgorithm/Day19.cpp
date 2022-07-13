@@ -4,6 +4,7 @@
 #include "StringSearcher.h"
 #include "LinkedList.h"
 #include "DoubleLinkedList.h"
+#include "BinarySearchTree.h"
 
 void Day19::ExSearchString()
 {
@@ -37,25 +38,6 @@ void Day19::ExSearchString()
 
 void Day19::UseCustomStack()
 {
-	class Student
-	{
-	public:
-		Student()
-			:
-			id(-1),
-			name("")
-		{}
-		Student( int id, const std::string& name )
-			:
-			id( id ),
-			name( name )
-		{}
-
-	public:
-		int id;
-		std::string name;
-	};
-
 
 	LinkedList<Student> studentList;
 
@@ -159,25 +141,6 @@ void Day19::UseCustomStack()
 
 void Day19::TestDouble()
 {
-	class Student
-	{
-	public:
-		Student()
-			:
-			id( -1 ),
-			name( "" )
-		{}
-		Student( int id, const std::string& name )
-			:
-			id( id ),
-			name( name )
-		{}
-
-	public:
-		int id;
-		std::string name;
-	};
-
 
 	DoubleLinkedList<Student> studentList;
 
@@ -281,6 +244,101 @@ void Day19::TestDouble()
 						printf( "%3d번 %s\n", data->id, data->name.c_str() );
 					}
 				);
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Day19::TestBinaryTree()
+{
+	BinarySearchTree<int> tree;
+	
+	tree.Add( 3 );
+	tree.Add( 2 );
+	tree.Add( 1 );
+	tree.Add( 4 );
+	tree.Remove( 4 );
+
+	tree.DoAscendingLoop(
+		[]( auto e )
+		{
+			std::cout << "key: " << e->GetKey() << " value: " << e->GetValue() << std::endl;
+		}
+	);
+
+}
+
+void Day19::UseBinarySearchTree()
+{
+	BinarySearchTree<int, std::string> studentList;
+
+	auto Print = []( auto e )
+	{
+		std::cout << "key: " << e->GetKey() << " value: " << e->GetValue() << std::endl;
+	};
+
+	while ( true )
+	{
+		std::cout << "\n1.학생 추가, 2.학생 삭제, 3.출력, 4.검색\n";
+		int input;
+		std::cin >> input;
+
+		switch ( input )
+		{
+		case 1:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+				std::cout << "대상 학생 이름 입력 : ";
+				std::string name;
+				std::cin >> name;
+				Student s( id, name );
+
+				studentList.Add( id, name );
+				studentList.DoAscendingLoop( Print );
+			}
+			break;
+		case 2:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+
+				if ( studentList.Remove( id ) )
+				{
+					std::cout << "학생 삭제 완료\n";
+					studentList.DoAscendingLoop( Print );
+				}
+				else
+				{
+					std::cout << "학생 삭제 실패\n";
+				}
+
+			}
+			break;
+		case 3:
+			{
+				studentList.DoAscendingLoop( Print );
+			}
+			break;
+		case 4:
+			{
+				std::cout << "번호 입력 : ";
+				int id;
+				std::cin >> id;
+				const auto& pData = studentList.Search( id );
+				if ( pData == nullptr )
+				{
+					printf( "해당하는 데이터가 존재하지 않습니다\n" );
+				}
+				else
+				{
+					printf( "%3d번 %s\n", pData->GetKey(), pData->GetValue() );
+				}
 			}
 			break;
 		default:

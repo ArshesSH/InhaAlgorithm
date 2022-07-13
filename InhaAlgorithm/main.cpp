@@ -13,6 +13,6 @@
 
 int main()
 {
-	Day19::TestDouble();
+	Day19::TestBinaryTree();
 	return 0;
 }
