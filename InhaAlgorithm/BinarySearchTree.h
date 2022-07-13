@@ -14,7 +14,10 @@ public:
 			:
 			key( key ),
 			value( value )
-		{}
+		{
+			pLeft = nullptr;
+			pRight = nullptr;
+		}
 
 		~Element() = default;
 		Element( const Element& src )
@@ -46,6 +49,10 @@ public:
 			return value;
 		}
 
+		void SetKey( const K& key_in )
+		{
+			key = key_in;
+		}
 		void SetValue( const V& value_in )
 		{
 			value = value_in;
@@ -88,11 +95,19 @@ public:
 	private:
 		K key;
 		V value;
-		std::shared_ptr<Element> pLeft = nullptr;
-		std::shared_ptr<Element> pRight = nullptr;
+		std::shared_ptr<Element> pLeft;
+		std::shared_ptr<Element> pRight;
 	};
 
 public:
+	BinarySearchTree() = default;
+	~BinarySearchTree()
+	{
+		while ( pRoot )
+		{
+			RemoveTarget( pRoot->GetKey() );
+		}
+	}
 	void Add( K key, V value = V(0) )
 	{
 		auto node = std::make_shared<Element>( key, value );
@@ -168,45 +183,46 @@ public:
 		return nullptr;
 	}
 
-	bool Remove( K key )
+	bool RemoveTarget( K key )
 	{
-		auto pTarget = Search( key );
-		if ( pTarget == nullptr )
-		{
-			return false;
-		}
+		return _Remove( key, pRoot );
+	}
 
-		// If Left Child is empty
-		if ( pTarget->CheckLeftIsLeaf() )
+	bool _Remove( K key, std::shared_ptr<Element>& p )
+	{
+		if ( p && key < p->GetKey() )
 		{
-			// Also Right Child is empty (it's leaf)
-			if ( pTarget->CheckRightIsLeaf() )
+			return _Remove( key, p->GetLeft() );
+		}
+		else if ( p && key > p->GetKey() )
+		{
+			return _Remove( key, p->GetRight() );
+		}
+		else if ( p && key == p->GetKey() )
+		{
+			if ( !p->GetLeft() )
 			{
-				pTarget = nullptr;
-				return true;
+				p = p->GetRight();
 			}
-			
-			// If Left is Empty
-			// Find Least Child and Copy values (Not include Child Pointers)
-			auto pLeastChild = FindLeastChild( pTarget->GetRight() );
-			*pTarget = *pLeastChild;
-			return Remove( pLeastChild->GetKey() );
-		
+			else if ( !p->GetRight() )
+			{
+				p = p->GetLeft();
+			}
+			else
+			{
+				std::shared_ptr<Element> q = p->GetLeft();
+				while ( q->GetRight() )
+				{
+					q = q->GetRight();
+					p->SetKey( q->GetKey() );
+					_Remove( q->GetKey(), p->GetLeft() );
+				}
+			}
+			return true;
 		}
-		// If Right Child is empty
-		else if ( pTarget->CheckRightIsLeaf() )
-		{
-			auto pGreatestChild = FindGreatestChild( pTarget->GetLeft() );
-			*pTarget = *pGreatestChild;
-			return Remove( pGreatestChild->GetKey() );
-		}
-		else
-		{
-
-		}
-
 		return false;
 	}
+
 
 	template <typename F>
 	void DoAscendingLoop( F func )
