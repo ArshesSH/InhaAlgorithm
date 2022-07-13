@@ -16,7 +16,14 @@ public:
 			value( value )
 		{}
 
-		~Element() = default;
+		~Element()
+		{
+			delete pLeft;
+			pLeft = nullptr;
+			delete pRight;
+			pRight = nullptr;
+		}
+
 		Element( const Element& src )
 			:
 			key( key ),
@@ -50,20 +57,20 @@ public:
 		{
 			value = value_in;
 		}
-		std::shared_ptr<Element>& GetLeft()
+		Element* GetLeft() const
 		{
 			return pLeft;
 		}
-		std::shared_ptr<Element>& GetRight()
+		Element* GetRight() const
 		{
 			return pRight;
 		}
 		
-		void SetLeft( std::shared_ptr<Element>& pE )
+		void SetLeft( Element* pE )
 		{
 			pLeft = std::move(pE);
 		}
-		void SetRight( std::shared_ptr<Element>& pE )
+		void SetRight( Element* pE )
 		{
 			pRight = std::move( pE );
 		}
@@ -88,30 +95,47 @@ public:
 	private:
 		K key;
 		V value;
-		std::shared_ptr<Element> pLeft = nullptr;
-		std::shared_ptr<Element> pRight = nullptr;
+		Element* pLeft = nullptr;
+		Element* pRight = nullptr;
 	};
 
 public:
+	BinarySearchTree() = default;
+	BinarySearchTree( const BinarySearchTree& src )
+	{
+		*this = src;
+	}
+	BinarySearchTree& operator=( const BinarySearchTree& src )
+	{
+	}
+	~BinarySearchTree()
+	{
+		delete pRoot;
+		pRoot = nullptr;
+	}
+
 	void Add( K key, V value = V(0) )
 	{
-		auto node = std::make_shared<Element>( key, value );
+		auto node = new Element( key, value );
 
 		// If Root
 		if (pRoot == nullptr)
 		{
 			pRoot = std::move(node);
+			node = nullptr;
 			return;
 		}
 		
 		// else
-		std::shared_ptr<Element> pCur = pRoot;
+		Element* pCur = pRoot;
 		for (; pCur != nullptr;)
 		{
 			// If aleady exist same key, than change value
 			if (*pCur == *node)
 			{
 				pCur->SetValue( value );
+				delete node;
+				node = nullptr;
 				return;
 			}
 
@@ -122,6 +146,7 @@ public:
 				if (pCur->CheckLeftIsLeaf())
 				{
 					pCur->SetLeft( node );
+					node = nullptr;
 					return;
 				}
 				// Else Keep search
@@ -133,6 +158,7 @@ public:
 				if (pCur->CheckRightIsLeaf())
 				{
 					pCur->SetRight( node );
+					node = nullptr;
 					return;
 				}
 				pCur = pCur->GetRight();
@@ -140,7 +166,7 @@ public:
 		}
 	}
 
-	std::shared_ptr<Element> Search( K key )
+	Element* Search( K key )
 	{
 		for ( auto pCur = pRoot; pCur != nullptr; )
 		{
@@ -182,6 +208,7 @@ public:
 			// Also Right Child is empty (it's leaf)
 			if ( pTarget->CheckRightIsLeaf() )
 			{
+				delete pTarget;
 				pTarget = nullptr;
 				return true;
 			}
@@ -216,7 +243,7 @@ public:
 
 private:
 	template <typename F>
-	void LoopInorder( const std::shared_ptr<Element>& pTarget, F func )
+	void LoopInorder( Element* pTarget, F func )
 	{
 		if ( pTarget != nullptr )
 		{
@@ -226,7 +253,7 @@ private:
 		}
 	}
 
-	std::shared_ptr<Element> FindGreatestChild( const std::shared_ptr<Element>& pParent)
+	Element* FindGreatestChild( Element* pParent)
 	{
 		for ( auto pCur = pParent; pCur != nullptr; pCur = pCur->GetRight())
 		{
@@ -237,7 +264,7 @@ private:
 		}
 		return nullptr;
 	}
-	std::shared_ptr<Element> FindLeastChild( const std::shared_ptr<Element>& pParent )
+	Element* FindLeastChild( Element* pParent )
 	{
 		for ( auto pCur = pParent; pCur != nullptr; pCur = pCur->GetLeft() )
 		{
@@ -250,5 +277,5 @@ private:
 	}
 
 private:
-	std::shared_ptr<Element> pRoot;
+	Element* pRoot;
 };
