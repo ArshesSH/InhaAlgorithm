@@ -3,6 +3,7 @@
 #include "StopWatch.h"
 #include "StringSearcher.h"
 #include "LinkedList.h"
+#include "DoubleLinkedList.h"
 
 void Day19::ExSearchString()
 {
@@ -148,6 +149,138 @@ void Day19::UseCustomStack()
 						printf( "%3d번 %s\n", data.id, data.name.c_str() );
 					}
 				}
+			}
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Day19::TestDouble()
+{
+	class Student
+	{
+	public:
+		Student()
+			:
+			id( -1 ),
+			name( "" )
+		{}
+		Student( int id, const std::string& name )
+			:
+			id( id ),
+			name( name )
+		{}
+
+	public:
+		int id;
+		std::string name;
+	};
+
+
+	DoubleLinkedList<Student> studentList;
+
+	while ( true )
+	{
+		std::cout << "\n1.학생 추가, 2.학생 삭제, 3.출력, 4.검색, 5.반대로 출력\n";
+		int input;
+		std::cin >> input;
+
+		switch ( input )
+		{
+		case 1:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+				std::cout << "대상 학생 이름 입력 : ";
+				std::string name;
+				std::cin >> name;
+				Student s( id, name );
+
+				int inputPos = studentList.find_pos( s,
+					[]( Student a, Student b )
+					{
+						return a.id <= b.id;
+					}
+				);
+				studentList.insert( s, inputPos );
+			}
+			break;
+		case 2:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+
+				int findPos = studentList.find_pos( { id,"" },
+					[]( Student a, Student b )
+					{
+						return a.id == b.id;
+					}
+				);
+				studentList.remove( findPos );
+			}
+			break;
+		case 3:
+			{
+				studentList.do_loop(
+					[]( Student* data )
+					{
+						printf( "%3d번 %s\n", data->id, data->name.c_str() );
+					}
+				);
+			}
+			break;
+		case 4:
+			{
+				std::cout << "1.번호로 검색 2.이름으로 검색\n";
+				int searchCase;
+				std::cin >> searchCase;
+
+				if ( searchCase == 1 )
+				{
+					std::cout << "번호 입력 : ";
+					int id;
+					std::cin >> id;
+					Student data = studentList.find_if( { id,"" },
+						[]( Student a, Student b )
+						{
+							return a.id == b.id;
+						}
+					);
+					if ( data.id != -1 )
+					{
+						printf( "%3d번 %s\n", data.id, data.name.c_str() );
+					}
+				}
+				else if ( searchCase == 2 )
+				{
+					std::cout << "이름 입력 : ";
+					std::string name;
+					std::cin >> name;
+					Student data = studentList.find_if( { 0, name },
+						[]( Student a, Student b )
+						{
+							return a.name == b.name;
+						}
+					);
+					if ( data.id != -1 )
+					{
+						printf( "%3d번 %s\n", data.id, data.name.c_str() );
+					}
+				}
+			}
+			break;
+		case 5:
+			{
+				studentList.do_loop_reverse(
+					[]( Student* data )
+					{
+						printf( "%3d번 %s\n", data->id, data->name.c_str() );
+					}
+				);
 			}
 			break;
 		default:

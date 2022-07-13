@@ -13,6 +13,6 @@
 
 int main()
 {
-	Day19::UseCustomStack();
+	Day19::TestDouble();
 	return 0;
 }
