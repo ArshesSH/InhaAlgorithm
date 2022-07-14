@@ -171,6 +171,7 @@ public:
 		for ( auto i = 0; i < hashSize; ++i )
 		{
 			delete map[i];
+			map[i] = nullptr;
 		}
 	}
 
