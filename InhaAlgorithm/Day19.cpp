@@ -262,7 +262,7 @@ void Day19::TestBinaryTree()
 	tree.Add( 0 );
 	tree.Add( 3 );
 	tree.Add( 5 );
-	bool a = tree.RemoveTarget( 2 );
+	bool a = tree.Remove( 2 );
 
 	tree.DoAscendingLoop(
 		[]( auto e )
@@ -310,7 +310,7 @@ void Day19::UseBinarySearchTree()
 				int id;
 				std::cin >> id;
 
-				if ( studentList.RemoveTarget( id ) )
+				if ( studentList.Remove( id ) )
 				{
 					std::cout << "학생 삭제 완료\n";
 					studentList.DoAscendingLoop( Print );
@@ -339,7 +339,7 @@ void Day19::UseBinarySearchTree()
 				}
 				else
 				{
-					printf( "%3d번 %s\n", pData->GetKey(), pData->GetValue() );
+					printf( "%3d번 %s\n", pData->GetKey(), pData->GetValue().c_str() );
 				}
 			}
 			break;
