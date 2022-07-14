@@ -256,11 +256,13 @@ void Day19::TestBinaryTree()
 {
 	BinarySearchTree<int> tree;
 	
-	tree.Add( 3 );
+	tree.Add( 4 );
 	tree.Add( 2 );
 	tree.Add( 1 );
-	tree.Add( 4 );
-	bool a = tree.RemoveTarget( 3 );
+	tree.Add( 0 );
+	tree.Add( 3 );
+	tree.Add( 5 );
+	bool a = tree.RemoveTarget( 2 );
 
 	tree.DoAscendingLoop(
 		[]( auto e )
