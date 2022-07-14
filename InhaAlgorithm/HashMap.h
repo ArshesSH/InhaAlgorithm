@@ -81,10 +81,6 @@ public:
 			}
 			curNode = curNode->GetNext();
 		}
-		if ( curNode == nullptr )
-		{
-			return nullptr;
-		}
 		return nullptr;
 	}
 
@@ -100,10 +96,6 @@ public:
 				return curNode;
 			}
 			curNode = curNode->GetNext();
-		}
-		if ( curNode == nullptr )
-		{
-			return nullptr;
 		}
 		return nullptr;
 	}
