@@ -105,7 +105,7 @@ public:
 	{
 		while ( pRoot )
 		{
-			RemoveTarget( pRoot->GetKey() );
+			Remove( pRoot->GetKey() );
 		}
 	}
 

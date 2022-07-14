@@ -164,6 +164,7 @@
     <ClInclude Include="Day8.h" />
     <ClInclude Include="Day9.h" />
     <ClInclude Include="DoubleLinkedList.h" />
+    <ClInclude Include="HashMap.h" />
     <ClInclude Include="Queue.h" />
     <ClInclude Include="SearchAlgorithm.h" />
     <ClInclude Include="SortAlgorithm.h" />

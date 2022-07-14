@@ -28,5 +28,7 @@ public:
 	static void TestDouble();
 	static void TestBinaryTree();
 	static void UseBinarySearchTree();
+	static void TestHashMap();
+	static void UseHashMap();
 };
 

@@ -13,6 +13,6 @@
 
 int main()
 {
-	Day19::TestBinaryTree();
+	Day19::UseHashMap();
 	return 0;
 }

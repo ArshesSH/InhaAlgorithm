@@ -5,6 +5,7 @@
 #include "LinkedList.h"
 #include "DoubleLinkedList.h"
 #include "BinarySearchTree.h"
+#include "HashMap.h"
 
 void Day19::ExSearchString()
 {
@@ -343,6 +344,137 @@ void Day19::UseBinarySearchTree()
 				}
 			}
 			break;
+		default:
+			break;
+		}
+	}
+}
+
+void Day19::TestHashMap()
+{
+	auto keyFunc = []( Student data )->int
+	{
+		return data.id;
+	};
+
+	auto isEqual = []( Student lhs, Student rhs )
+	{
+		return lhs.id == rhs.id;
+	};
+
+	auto printFunc = []( auto e, int i )
+	{
+		printf( "%02d :", i );
+		for ( auto pCur = e[i]; pCur != nullptr; pCur = pCur->GetNext() )
+		{
+			printf( " ->%d(%s)", pCur->data.id, pCur->data.name.c_str() );
+		}
+		printf( "\n" );
+	};
+
+	HashMap<Student> map( 13, keyFunc );
+
+	map.Add( {1, "hello"});
+	map.Add( { 2, "hi" } );
+	map.Add( { 3, "bye" } );
+	map.Add( { 16, "hello" } );
+	map.DoLoop( printFunc );
+	auto a = map.SearchByKey( 3 );
+	map.RemoveByData( { 3, "bye" }, isEqual );
+	map.DoLoop( printFunc );
+	auto b = map.SearchByKey( 3 );
+}
+
+void Day19::UseHashMap()
+{
+	auto keyFunc = []( Student data )->int
+	{
+		return data.id;
+	};
+
+	auto isEqual = []( Student lhs, Student rhs )
+	{
+		return lhs.id == rhs.id;
+	};
+
+	auto printFunc = []( auto e, int i )
+	{
+		printf( "%02d :", i );
+		for ( auto pCur = e[i]; pCur != nullptr; pCur = pCur->GetNext() )
+		{
+			printf( " ->%d(%s)", pCur->data.id, pCur->data.name.c_str() );
+		}
+		printf( "\n" );
+	};
+	HashMap<Student> studentList(keyFunc);
+
+	while ( true )
+	{
+		std::cout << "\n1.학생 추가, 2.학생 삭제, 3.검색, 4.모두삭제, 5.덤프 \n";
+		int input;
+		std::cin >> input;
+
+		switch ( input )
+		{
+		case 1:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+				std::cout << "대상 학생 이름 입력 : ";
+				std::string name;
+				std::cin >> name;
+				Student s( id, name );
+
+				studentList.Add( {id, name} );
+				//studentList.DoLoop( printFunc );
+			}
+			break;
+		case 2:
+			{
+				std::cout << "대상 학생 번호 입력 : ";
+				int id;
+				std::cin >> id;
+
+				if ( studentList.RemoveByKey( id ) )
+				{
+					std::cout << "학생 삭제 완료\n";
+					//studentList.DoLoop( printFunc );
+				}
+				else
+				{
+					std::cout << "학생 삭제 실패\n";
+				}
+
+			}
+			break;
+		case 3:
+			{
+				std::cout << "번호 입력 : ";
+				int id;
+				std::cin >> id;
+				const auto& pData = studentList.SearchByKey( id );
+				if ( pData == nullptr )
+				{
+					printf( "해당하는 데이터가 존재하지 않습니다\n" );
+				}
+				else
+				{
+					printf( "%3d번 %s\n", pData->data.id, pData->data.name.c_str() );
+				}
+			}
+			break;
+
+		case 4:
+			studentList.RemoveAll();
+			break;
+		
+		case 5:
+			{
+				studentList.DoLoop( printFunc );
+			}
+			break;
+
 		default:
 			break;
 		}
